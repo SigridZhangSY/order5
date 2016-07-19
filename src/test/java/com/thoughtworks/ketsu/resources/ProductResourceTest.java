@@ -1,5 +1,6 @@
 package com.thoughtworks.ketsu.resources;
 
+import com.thoughtworks.ketsu.infrastructure.core.Product;
 import com.thoughtworks.ketsu.infrastructure.core.ProductRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
@@ -59,5 +60,12 @@ public class ProductResourceTest extends ApiSupport{
         final List<Map<String, Object>> list = get.readEntity(List.class);
         assertThat(list.size(), is(1));
         assertThat(list.get(0).get("name"), is("apple"));
+    }
+
+    @Test
+    public void should_return_200_when_find_product(){
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Response get = get("products/" + product.getId());
+        assertThat(get.getStatus(), is(HttpStatus.OK_200.getStatusCode()));
     }
 }
