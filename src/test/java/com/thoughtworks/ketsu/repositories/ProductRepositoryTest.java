@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 import java.util.List;
 
@@ -31,5 +32,12 @@ public class ProductRepositoryTest {
         List<Product> list = productRepository.lisAllProducts();
         assertThat(list.size(), is(1));
         assertThat(list.get(0).getId(), is(product.getId()));
+    }
+
+    @Test
+    public void should_find_product_by_id(){
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Product product_res = productRepository.findProductById(product.getId()).orElseThrow(() -> new NotFoundException("product not found"));
+        assertThat(product_res.getId(), is(product.getId()));
     }
 }
