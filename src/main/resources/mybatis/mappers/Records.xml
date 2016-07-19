@@ -3,10 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="records">
-<resultMap id="product" type="com.thoughtworks.ketsu.infrastructure.records.ProductRecord">
-    <id column="product_id" property="id"/>
-    <result column="product_name" property="name"/>
-    <result column="product_description" property="description"/>
-    <result column="product_price" property="price"/>
-</resultMap>
+    <resultMap id="product" type="com.thoughtworks.ketsu.infrastructure.records.ProductRecord">
+        <id column="product_id" property="id"/>
+        <result column="product_name" property="name"/>
+        <result column="product_description" property="description"/>
+        <result column="product_price" property="price"/>
+    </resultMap>
+    <resultMap id="user" type="com.thoughtworks.ketsu.infrastructure.records.UserRecord">
+        <id column="user_id" property="id"/>
+        <result column="user_name" property="name"/>
+    </resultMap>
 </mapper>
