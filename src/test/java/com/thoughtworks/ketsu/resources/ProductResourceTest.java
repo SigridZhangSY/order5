@@ -70,4 +70,11 @@ public class ProductResourceTest extends ApiSupport{
         final Map<String, Object> res = get.readEntity(Map.class);
         assertThat(res.get("uri"), is("/products/" + product.getId()));
     }
+
+    @Test
+    public void should_return_404_when_product_not_found(){
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Response get = get("products/" + (product.getId()+1));
+        assertThat(get.getStatus(), is(HttpStatus.NOT_FOUND_404.getStatusCode()));
+    }
 }
