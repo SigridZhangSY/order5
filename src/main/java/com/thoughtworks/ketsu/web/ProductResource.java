@@ -17,6 +17,6 @@ public class ProductResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createProduct(@Context Routes routes){
-        return Response.status(201).build();
+        return Response.created(routes.productUri(new ProductRecord(1))).build();
     }
 }

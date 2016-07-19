@@ -24,8 +24,9 @@ public class ProductResourceTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_201_when_create_product(){
+    public void should_return_uri_when_create_product(){
         Response post = post("products", TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
         assertThat(post.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
+        assertThat(post.getLocation().toString(), endsWith("/products/1"));
     }
 }
