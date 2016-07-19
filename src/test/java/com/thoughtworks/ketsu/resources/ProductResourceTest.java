@@ -1,5 +1,6 @@
 package com.thoughtworks.ketsu.resources;
 
+import com.thoughtworks.ketsu.infrastructure.core.ProductRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
 import com.thoughtworks.ketsu.support.TestHelper;
@@ -8,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 
 import java.util.HashMap;
@@ -21,6 +23,9 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(ApiTestRunner.class)
 public class ProductResourceTest extends ApiSupport{
+
+    @Inject
+    ProductRepository productRepository;
 
     @Before
     public void setUp() throws Exception {
@@ -44,5 +49,12 @@ public class ProductResourceTest extends ApiSupport{
         final List<Map<String, Object>> res = post.readEntity(List.class);
         assertThat(res.size(), is(2));
 
+    }
+
+    @Test
+    public void should_return_200_when_list_products(){
+        productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Response get = get("products");
+        assertThat(get.getStatus(), is(HttpStatus.OK_200.getStatusCode()));
     }
 }
