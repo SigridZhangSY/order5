@@ -13,6 +13,9 @@ public class ProductRecord implements Product{
         this.id = id;
     }
 
+    public ProductRecord(){
+    }
+
     @Override
     public int getId() {
         return id;

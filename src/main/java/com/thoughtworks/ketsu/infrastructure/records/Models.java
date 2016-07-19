@@ -49,6 +49,7 @@ public class Models extends AbstractModule {
     @Override
     protected void configure() {
         bindPersistence();
+        bind(com.thoughtworks.ketsu.infrastructure.core.ProductRepository.class).to(com.thoughtworks.ketsu.infrastructure.repositories.ProductRepository.class);
     }
 
     private void bindPersistence() {

@@ -3,5 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="columns">
-
+<sql id="product">
+    P.id as product_id,
+    P.name as product_name,
+    P.description as product_description,
+    P.price as product_price
+</sql>
 </mapper>
