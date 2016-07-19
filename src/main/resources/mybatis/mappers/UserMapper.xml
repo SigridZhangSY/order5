@@ -11,4 +11,10 @@
         FROM USERS U
         WHERE U.id = #{userId}
     </select>
+    <select id="findByName" resultMap="records.user">
+        SELECT
+        <include refid="columns.user"/>
+        FROM USERS U
+        WHERE U.name = #{userName}
+    </select>
 </mapper>

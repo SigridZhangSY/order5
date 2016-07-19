@@ -12,4 +12,6 @@ public interface UserMapper {
     int save(@Param("info") Map<String, Object> info);
 
     User findById(@Param("userId") int userId);
+
+    User findByName(@Param("userName") String userName);
 }

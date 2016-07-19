@@ -6,6 +6,7 @@ import com.thoughtworks.ketsu.infrastructure.mybatis.mappers.UserMapper;
 
 import javax.inject.Inject;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserRepository implements com.thoughtworks.ketsu.infrastructure.core.UserRepository{
 
@@ -15,6 +16,11 @@ public class UserRepository implements com.thoughtworks.ketsu.infrastructure.cor
     public User createUser(Map<String, Object> info) {
         userMapper.save(info);
         return userMapper.findById(Integer.valueOf(String.valueOf(info.get("id"))));
+    }
+
+    @Override
+    public Optional<User> findUserByName(String userName) {
+        return Optional.ofNullable(userMapper.findByName(userName));
     }
 }
 
