@@ -10,6 +10,10 @@ import org.junit.runner.RunWith;
 
 import javax.ws.rs.core.Response;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -27,5 +31,18 @@ public class ProductResourceTest extends ApiSupport{
     public void should_return_201_when_create_product_with_specified_(){
         Response post = post("products", TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
         assertThat(post.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
+    }
+
+    @Test
+    public void should_return_400_when_create_product_with_name_and_price_are_null(){
+        Map<String, Object> map = new HashMap<>();
+        map = TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2)));
+        map.remove("name");
+        map.remove("price");
+        Response post = post("products", map);
+        assertThat(post.getStatus(), is(HttpStatus.BAD_REQUEST_400.getStatusCode()));
+        final List<Map<String, Object>> res = post.readEntity(List.class);
+        assertThat(res.size(), is(2));
+
     }
 }
