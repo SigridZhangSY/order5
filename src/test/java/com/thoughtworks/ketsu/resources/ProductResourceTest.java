@@ -52,9 +52,12 @@ public class ProductResourceTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_200_when_list_products(){
+    public void should_return_detail_when_list_products(){
         productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
         Response get = get("products");
         assertThat(get.getStatus(), is(HttpStatus.OK_200.getStatusCode()));
+        final List<Map<String, Object>> list = get.readEntity(List.class);
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0).get("name"), is("apple"));
     }
 }

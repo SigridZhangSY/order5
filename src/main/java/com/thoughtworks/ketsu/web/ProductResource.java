@@ -1,5 +1,6 @@
 package com.thoughtworks.ketsu.web;
 
+import com.thoughtworks.ketsu.infrastructure.core.Product;
 import com.thoughtworks.ketsu.infrastructure.core.ProductRepository;
 import com.thoughtworks.ketsu.infrastructure.records.ProductRecord;
 import com.thoughtworks.ketsu.web.exception.InvalidParameterException;
@@ -36,7 +37,7 @@ public class ProductResource {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String listProducts(){
-        return "OK";
+    public List<Product> listProducts(@Context ProductRepository productRepository){
+        return productRepository.lisAllProducts();
     }
 }
