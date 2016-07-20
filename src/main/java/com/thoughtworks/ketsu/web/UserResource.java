@@ -73,7 +73,7 @@ public class UserResource {
     @GET
     @Path("orders/{orderId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public String getOrderByIdForUser(){
-        return "OK";
+    public Order getOrderByIdForUser(@PathParam("orderId") long orderId){
+        return user.findOrderById(orderId).orElseThrow(() -> new NotFoundException("order not found"));
     }
 }
