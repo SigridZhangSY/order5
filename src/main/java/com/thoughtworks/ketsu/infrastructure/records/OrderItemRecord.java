@@ -19,7 +19,5 @@ public class OrderItemRecord implements com.thoughtworks.ketsu.infrastructure.co
     }
 
     @Override
-    public float getAmount() {
-        return amount;
-    }
+    public float getAmount() {return amount;}
 }

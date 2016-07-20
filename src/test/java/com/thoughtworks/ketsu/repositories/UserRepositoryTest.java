@@ -1,7 +1,6 @@
 package com.thoughtworks.ketsu.repositories;
 
-import com.thoughtworks.ketsu.infrastructure.core.User;
-import com.thoughtworks.ketsu.infrastructure.core.UserRepository;
+import com.thoughtworks.ketsu.infrastructure.core.*;
 import com.thoughtworks.ketsu.support.DatabaseTestRunner;
 import com.thoughtworks.ketsu.support.TestHelper;
 import org.junit.Test;
@@ -17,6 +16,10 @@ import static org.junit.Assert.assertThat;
 public class UserRepositoryTest {
     @Inject
     UserRepository userRepository;
+
+    @Inject
+    ProductRepository productRepository;
+
 
     @Test
     public void should_save_and_find_user(){
@@ -36,5 +39,14 @@ public class UserRepositoryTest {
         User user = userRepository.createUser(TestHelper.userMap("John"));
         User user_res = userRepository.findUserById(user.getId()).orElseThrow(() -> new NotFoundException("user not found"));
         assertThat(user_res.getId(), is(user.getId()));
+    }
+
+    @Test
+    public void should_save_and_find_order(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        assertThat(order.getName(), is("kayla"));
+        assertThat(order.getItems().size(), is(1));
     }
 }

@@ -23,6 +23,10 @@ public class OrderRecord implements Order {
         this.userId = userId;
     }
 
+    public OrderRecord(){
+
+    }
+
     @Override
     public long getId() {return id;}
 

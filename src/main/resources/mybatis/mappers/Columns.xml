@@ -13,4 +13,16 @@
         U.id as user_id,
         U.name as user_name
     </sql>
+    <sql id="order">
+        O.id as order_id,
+        O.user_id as user_id,
+        O.name as user_name,
+        O.address as user_address,
+        O.phone as user_phone,
+        O.total_price as total_price,
+        O.time as order_time,
+        T.product_id as product_id,
+        T.quantity as quantity,
+        T.amount as amount
+    </sql>
 </mapper>
