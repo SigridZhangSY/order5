@@ -137,4 +137,13 @@ public class UsersResourceTest extends ApiSupport {
         final List<Map<String, Object>> list = (List<Map<String, Object>>) res.get("order_items");
         assertThat(list.size(), is(1));
     }
+
+    @Test
+    public void should_return_404_when_order_not_exists(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        Response get = get("users/" + user.getId() + "/orders/" + (order.getId()+1));
+        assertThat(get.getStatus(), is(HttpStatus.NOT_FOUND_404.getStatusCode()));
+    }
 }
