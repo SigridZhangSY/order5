@@ -84,6 +84,13 @@ public class UserResource {
     public Response createPaymentForOrder(Map<String, Object> info,
                                           @PathParam("orderId") long orderId,
                                           @Context Routes routes){
+        List<String> invalidParameter = new ArrayList<>();
+        if(info.getOrDefault("pay_type", "").toString().trim().isEmpty())
+            invalidParameter.add("pay_type");
+        if(info.getOrDefault("amount", "").toString().trim().isEmpty())
+            invalidParameter.add("amount");
+        if(invalidParameter.size() > 0)
+            throw new InvalidParameterException(invalidParameter);
         Order order = user.findOrderById(orderId).orElseThrow(() -> new NotFoundException("order not found"));
         return Response.created(routes.paymentUri(order.createPayment(info), user.getId())).build();
     }
