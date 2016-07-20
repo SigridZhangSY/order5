@@ -61,4 +61,13 @@ public class UserRepositoryTest {
         List<Order> list = user.listOrdersForUser();
         assertThat(list.size(), is(1));
     }
+
+    @Test
+    public void should_find_order_by_id_for_user(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        Order order_res = user.findOrderById(order.getId()).orElseThrow(() -> new NotFoundException("order not found"));
+        assertThat(order_res.getId(), is(order.getId()));
+    }
 }

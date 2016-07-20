@@ -65,6 +65,11 @@ public class UserRecord implements User, Record{
     }
 
     @Override
+    public Optional<Order> findOrderById(long orderId) {
+        return Optional.ofNullable(orderMapper.findById(orderId));
+    }
+
+    @Override
     public Map<String, Object> toJson(Routes routes) {
         return new HashMap<String, Object>(){{
             put("id", id);
