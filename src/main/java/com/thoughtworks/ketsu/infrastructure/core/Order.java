@@ -5,6 +5,7 @@ import com.thoughtworks.ketsu.infrastructure.records.OrderItemRecord;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by syzhang on 7/20/16.
@@ -19,4 +20,5 @@ public interface Order {
     Date getTime();
     List<OrderItemRecord> getItems();
     Payment createPayment(Map<String, Object> info);
+    Optional<Payment> findPayment();
 }

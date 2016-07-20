@@ -81,6 +81,11 @@ public class OrderRecord implements Order, Record {
     }
 
     @Override
+    public Optional<Payment> findPayment() {
+        return Optional.ofNullable(paymentMapper.findByOrderId(id));
+    }
+
+    @Override
     public Map<String, Object> toJson(Routes routes) {
         return new HashMap<String, Object>() {{
             put("uri", routes.orderUri(OrderRecord.this));

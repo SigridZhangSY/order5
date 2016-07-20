@@ -28,4 +28,15 @@ public class OrderRecordTest {
         Payment payment = order.createPayment(TestHelper.paymentMap("CASH", Float.valueOf(100)));
         assertThat(payment.getOrderId(), is(order.getId()));
     }
+
+    @Test
+    public void should_find_payment_for_order(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        Payment payment = order.createPayment(TestHelper.paymentMap("CASH", Float.valueOf(100)));
+
+        Payment payment_res = order.findPayment().orElseThrow(() -> new NotFoundException("payment not found"));
+        assertThat(payment_res.getOrderId(), is(payment.getOrderId()));
+    }
 }
