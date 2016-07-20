@@ -6,9 +6,7 @@ import com.thoughtworks.ketsu.infrastructure.records.UserRecord;
 import com.thoughtworks.ketsu.web.exception.InvalidParameterException;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -34,5 +32,11 @@ public class UsersResource {
         if(user.isPresent())
             throw new InvalidParameterException("user has existed");
         return Response.created(routes.userUri(userRepository.createUser(info))).build();
+    }
+
+    @GET
+    @Path("{userId}")
+    public String getUserById(){
+        return "OK";
     }
 }

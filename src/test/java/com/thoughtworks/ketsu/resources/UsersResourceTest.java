@@ -1,5 +1,6 @@
 package com.thoughtworks.ketsu.resources;
 
+import com.thoughtworks.ketsu.infrastructure.core.User;
 import com.thoughtworks.ketsu.infrastructure.core.UserRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
@@ -53,5 +54,12 @@ public class UsersResourceTest extends ApiSupport{
         final List<Map<String, Object>> res = post.readEntity(List.class);
         assertThat(res.size(), is(1));
         assertThat(res.get(0).get("message"), is("name can not be empty"));
+    }
+
+    @Test
+    public void should_return_200_when_find_user_bu_id(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Response get = get("users/" + user.getId());
+        assertThat(get.getStatus(), is(HttpStatus.OK_200.getStatusCode()));
     }
 }
