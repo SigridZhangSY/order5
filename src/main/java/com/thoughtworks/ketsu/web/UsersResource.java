@@ -34,9 +34,11 @@ public class UsersResource {
         return Response.created(routes.userUri(userRepository.createUser(info))).build();
     }
 
-    @GET
+
     @Path("{userId}")
-    public String getUserById(){
-        return "OK";
+    public UserResource getUserById(@PathParam("userId") int userId,
+                                    @Context UserRepository userRepository){
+        User user = userRepository.findUserById(userId).orElseThrow(() -> new NotFoundException("user not found"));
+        return new UserResource(user);
     }
 }

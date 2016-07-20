@@ -57,9 +57,13 @@ public class UsersResourceTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_200_when_find_user_bu_id(){
+    public void should_return_detail_when_find_user_bu_id(){
         User user = userRepository.createUser(TestHelper.userMap("John"));
         Response get = get("users/" + user.getId());
         assertThat(get.getStatus(), is(HttpStatus.OK_200.getStatusCode()));
+        final Map<String, Object> res = get.readEntity(Map.class);
+        assertThat(res.get("name"), is("John"));
+        assertThat(res.get("id"), is(user.getId()));
+        assertThat(res.get("uri"), is("/users/" + user.getId()));
     }
 }
