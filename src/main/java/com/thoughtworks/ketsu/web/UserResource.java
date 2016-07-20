@@ -94,4 +94,12 @@ public class UserResource {
         Order order = user.findOrderById(orderId).orElseThrow(() -> new NotFoundException("order not found"));
         return Response.created(routes.paymentUri(order.createPayment(info), user.getId())).build();
     }
+
+    @GET
+    @Path("orders/{orderId}/payment")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String findPaymentForOrder(){
+        return "OK";
+    }
+
 }
