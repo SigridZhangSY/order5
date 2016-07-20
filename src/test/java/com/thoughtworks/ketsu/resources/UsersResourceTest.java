@@ -148,11 +148,13 @@ public class UsersResourceTest extends ApiSupport {
     }
 
     @Test
-    public void should_return_201_when_create_payment_for_order(){
+    public void should_return_uri_when_create_payment_for_order(){
         User user = userRepository.createUser(TestHelper.userMap("John"));
         Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
         Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
-        Response get = post("users/" + user.getId() + "/orders/" + order.getId() + "/payment",TestHelper.paymentMap("CASH", Float.valueOf(100)));
-        assertThat(get.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
+        Response post = post("users/" + user.getId() + "/orders/" + order.getId() + "/payment",TestHelper.paymentMap("CASH", Float.valueOf(100)));
+        assertThat(post.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
+        assertThat(post.getLocation().toString(), containsString("/orders/"));
+        assertThat(Pattern.matches(".*?/orders/[0-9-]*/payment", post.getLocation().toASCIIString()), is(true));
     }
 }

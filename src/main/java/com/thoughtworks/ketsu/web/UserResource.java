@@ -4,6 +4,7 @@ import com.thoughtworks.ketsu.infrastructure.core.Order;
 import com.thoughtworks.ketsu.infrastructure.core.User;
 import com.thoughtworks.ketsu.infrastructure.core.UserRepository;
 import com.thoughtworks.ketsu.infrastructure.records.OrderRecord;
+import com.thoughtworks.ketsu.infrastructure.records.PaymentRecord;
 import com.thoughtworks.ketsu.web.exception.InvalidParameterException;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
@@ -80,7 +81,8 @@ public class UserResource {
     @POST
     @Path("orders/{orderId}/payment")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createPaymentForOrder(){
-        return Response.status(201).build();
+    public Response createPaymentForOrder(@PathParam("orderId") long orderId,
+                                          @Context Routes routes){
+        return Response.created(routes.paymentUri(new PaymentRecord(orderId), user.getId())).build();
     }
 }
