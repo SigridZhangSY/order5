@@ -26,7 +26,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 @RunWith(ApiTestRunner.class)
-public class UsersResourceTest extends ApiSupport{
+public class UsersResourceTest extends ApiSupport {
     @Inject
     UserRepository userRepository;
     @Inject
@@ -38,21 +38,21 @@ public class UsersResourceTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_201_when_create_user_with_specifid_parameter(){
+    public void should_return_201_when_create_user_with_specifid_parameter() {
         Response post = post("users", TestHelper.userMap("John"));
         assertThat(post.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
         assertThat(Pattern.matches(".*?/users/[0-9-]*", post.getLocation().toASCIIString()), is(true));
     }
 
     @Test
-    public void should_return_400_when_create_user_with_name_exists(){
+    public void should_return_400_when_create_user_with_name_exists() {
         userRepository.createUser(TestHelper.userMap("John"));
         Response post = post("users", TestHelper.userMap("John"));
         assertThat(post.getStatus(), is(HttpStatus.BAD_REQUEST_400.getStatusCode()));
     }
 
     @Test
-    public void should_return_400_when_create_user_with_name_is_null(){
+    public void should_return_400_when_create_user_with_name_is_null() {
 
         Response post = post("users", new HashMap<String, Object>());
         assertThat(post.getStatus(), is(HttpStatus.BAD_REQUEST_400.getStatusCode()));
@@ -62,7 +62,7 @@ public class UsersResourceTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_detail_when_find_user_by_id(){
+    public void should_return_detail_when_find_user_by_id() {
         User user = userRepository.createUser(TestHelper.userMap("John"));
         Response get = get("users/" + user.getId());
         assertThat(get.getStatus(), is(HttpStatus.OK_200.getStatusCode()));
@@ -73,19 +73,34 @@ public class UsersResourceTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_404_when_find_user_with_user_not_exists(){
+    public void should_return_404_when_find_user_with_user_not_exists() {
         User user = userRepository.createUser(TestHelper.userMap("John"));
-        Response get = get("users/" + (user.getId()+1));
+        Response get = get("users/" + (user.getId() + 1));
         assertThat(get.getStatus(), is(HttpStatus.NOT_FOUND_404.getStatusCode()));
     }
 
     @Test
-    public void should_return_201_when_create_order_for_user_with_specified_parameter(){
+    public void should_return_201_when_create_order_for_user_with_specified_parameter() {
         User user = userRepository.createUser(TestHelper.userMap("John"));
         Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
         Response post = post("users/" + user.getId() + "/orders", TestHelper.orderMap("John", product.getId()));
         assertThat(post.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
         assertThat(post.getLocation().toString(), containsString("/orders/"));
         assertThat(Pattern.matches(".*?/orders/[0-9-]*", post.getLocation().toASCIIString()), is(true));
+    }
+
+    @Test
+    public void should_return_400_when_create_order_for_user_with_name_and_items_are_null() {
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Map<String, Object> map = TestHelper.orderMap("John", product.getId());
+        map.remove("name");
+        map.remove("order_items");
+        Response post = post("users/" + user.getId() + "/orders", map);
+
+        assertThat(post.getStatus(), is(HttpStatus.BAD_REQUEST_400.getStatusCode()));
+        final List<Map<String, Object>> errorInfo = post.readEntity(List.class);
+        assertThat(errorInfo.size(), is(2));
+
     }
 }
