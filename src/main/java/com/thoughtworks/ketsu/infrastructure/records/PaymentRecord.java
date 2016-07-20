@@ -17,6 +17,9 @@ public class PaymentRecord implements Payment{
         this.orderId = orderId;
     }
 
+    public PaymentRecord(){
+    }
+
     @Override
     public long getOrderId() {
         return orderId;

@@ -27,5 +27,11 @@
             <result column="amount" property="amount"/>
         </collection>
     </resultMap>
+    <resultMap id="payment" type="com.thoughtworks.ketsu.infrastructure.records.PaymentRecord">
+        <id column="order_id" property="orderId"/>
+        <result column="pay_type" property="payType"/>
+        <result column="amount" property="amount"/>
+        <result column="time" property="time"/>
+    </resultMap>
 </mapper>
 

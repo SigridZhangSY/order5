@@ -1,8 +1,11 @@
 package com.thoughtworks.ketsu.infrastructure.records;
 
 import com.thoughtworks.ketsu.infrastructure.core.Order;
+import com.thoughtworks.ketsu.infrastructure.core.Payment;
+import com.thoughtworks.ketsu.infrastructure.mybatis.mappers.PaymentMapper;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
+import javax.inject.Inject;
 import java.util.*;
 
 /**
@@ -26,6 +29,9 @@ public class OrderRecord implements Order, Record {
     public OrderRecord(){
 
     }
+
+    @Inject
+    PaymentMapper paymentMapper;
 
     @Override
     public long getId() {return id;}
@@ -61,6 +67,13 @@ public class OrderRecord implements Order, Record {
     @Override
     public List<OrderItemRecord> getItems() {
         return items;
+    }
+
+    @Override
+    public Payment createPayment(Map<String, Object> info) {
+        info.put("order_id", id);
+        paymentMapper.save(info);
+        return paymentMapper.findByOrderId(id);
     }
 
     @Override
