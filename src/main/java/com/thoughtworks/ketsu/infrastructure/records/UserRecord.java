@@ -60,6 +60,11 @@ public class UserRecord implements User, Record{
     }
 
     @Override
+    public List<Order> listOrdersForUser() {
+        return orderMapper.getOrdersForUser(id);
+    }
+
+    @Override
     public Map<String, Object> toJson(Routes routes) {
         return new HashMap<String, Object>(){{
             put("id", id);

@@ -1,6 +1,7 @@
 package com.thoughtworks.ketsu.repositories;
 
 import com.thoughtworks.ketsu.infrastructure.core.*;
+import com.thoughtworks.ketsu.infrastructure.mybatis.mappers.OrderMapper;
 import com.thoughtworks.ketsu.support.DatabaseTestRunner;
 import com.thoughtworks.ketsu.support.TestHelper;
 import org.junit.Test;
@@ -8,6 +9,8 @@ import org.junit.runner.RunWith;
 
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
+
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -48,5 +51,14 @@ public class UserRepositoryTest {
         Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
         assertThat(order.getName(), is("kayla"));
         assertThat(order.getItems().size(), is(1));
+    }
+
+    @Test
+    public void should_list_orders_for_user(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        List<Order> list = user.listOrdersForUser();
+        assertThat(list.size(), is(1));
     }
 }
