@@ -57,7 +57,7 @@ public class UsersResourceTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_detail_when_find_user_bu_id(){
+    public void should_return_detail_when_find_user_by_id(){
         User user = userRepository.createUser(TestHelper.userMap("John"));
         Response get = get("users/" + user.getId());
         assertThat(get.getStatus(), is(HttpStatus.OK_200.getStatusCode()));
@@ -65,5 +65,12 @@ public class UsersResourceTest extends ApiSupport{
         assertThat(res.get("name"), is("John"));
         assertThat(res.get("id"), is(user.getId()));
         assertThat(res.get("uri"), is("/users/" + user.getId()));
+    }
+
+    @Test
+    public void should_return_404_when_find_user_with_user_not_exists(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Response get = get("users/" + (user.getId()+1));
+        assertThat(get.getStatus(), is(HttpStatus.NOT_FOUND_404.getStatusCode()));
     }
 }
