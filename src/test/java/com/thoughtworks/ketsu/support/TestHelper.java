@@ -38,4 +38,11 @@ public class TestHelper {
         }};
     }
 
+    public static Map<String , Object> paymentMap(String payType, float amount){
+        return new HashMap<String, Object>(){{
+            put("pay_type", payType);
+            put("amount", amount);
+        }};
+    }
+
 }

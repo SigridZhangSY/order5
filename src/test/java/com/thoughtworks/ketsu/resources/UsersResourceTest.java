@@ -146,4 +146,13 @@ public class UsersResourceTest extends ApiSupport {
         Response get = get("users/" + user.getId() + "/orders/" + (order.getId()+1));
         assertThat(get.getStatus(), is(HttpStatus.NOT_FOUND_404.getStatusCode()));
     }
+
+    @Test
+    public void should_return_201_when_create_payment_for_order(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        Response get = post("users/" + user.getId() + "/orders/" + order.getId() + "/payment",TestHelper.paymentMap("CASH", Float.valueOf(100)));
+        assertThat(get.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
+    }
 }

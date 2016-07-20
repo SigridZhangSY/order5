@@ -76,4 +76,11 @@ public class UserResource {
     public Order getOrderByIdForUser(@PathParam("orderId") long orderId){
         return user.findOrderById(orderId).orElseThrow(() -> new NotFoundException("order not found"));
     }
+
+    @POST
+    @Path("orders/{orderId}/payment")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createPaymentForOrder(){
+        return Response.status(201).build();
+    }
 }
