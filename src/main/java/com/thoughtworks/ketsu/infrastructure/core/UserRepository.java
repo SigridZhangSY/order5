@@ -10,4 +10,6 @@ public interface UserRepository {
     User createUser(Map<String, Object> info);
 
     Optional<User> findUserByName(String userName);
+
+    Optional<User> findUserById(int userId);
 }
