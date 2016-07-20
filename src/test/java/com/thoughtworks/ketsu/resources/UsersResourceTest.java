@@ -103,4 +103,12 @@ public class UsersResourceTest extends ApiSupport {
         assertThat(errorInfo.size(), is(2));
 
     }
+
+    @Test
+    public void should_return_400_when_create_order_with_product_not_exists(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Response post = post("users/" + user.getId() + "/orders", TestHelper.orderMap("John", product.getId()+1));
+        assertThat(post.getStatus(), is(HttpStatus.BAD_REQUEST_400.getStatusCode()));
+    }
 }

@@ -6,12 +6,14 @@ import com.thoughtworks.ketsu.infrastructure.core.Product;
 import com.thoughtworks.ketsu.infrastructure.core.User;
 import com.thoughtworks.ketsu.infrastructure.mybatis.mappers.OrderMapper;
 import com.thoughtworks.ketsu.infrastructure.mybatis.mappers.ProductMapper;
+import com.thoughtworks.ketsu.web.exception.InvalidParameterException;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class UserRecord implements User, Record{
     private int id;
@@ -44,8 +46,10 @@ public class UserRecord implements User, Record{
         float totalPrice = 0;
         List<Map<String, Object>> items = (List<Map<String, Object>>)info.get("order_items");
         for(int i = 0; i < items.size(); i++){
-            Product product = productMapper.findById(Integer.valueOf(String.valueOf(items.get(i).get("product_id"))));
-            float amount = product.getPrice()*Integer.valueOf(String.valueOf(items.get(i).get("quantity")));
+            Optional<Product> product = Optional.ofNullable(productMapper.findById(Integer.valueOf(String.valueOf(items.get(i).get("product_id")))));
+            if (product.isPresent() == false)
+                throw new InvalidParameterException("product not exists");
+            float amount = product.get().getPrice()*Integer.valueOf(String.valueOf(items.get(i).get("quantity")));
             items.get(i).put("amount", amount);
             totalPrice += amount;
         }
