@@ -81,8 +81,10 @@ public class UserResource {
     @POST
     @Path("orders/{orderId}/payment")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createPaymentForOrder(@PathParam("orderId") long orderId,
+    public Response createPaymentForOrder(Map<String, Object> info,
+                                          @PathParam("orderId") long orderId,
                                           @Context Routes routes){
-        return Response.created(routes.paymentUri(new PaymentRecord(orderId), user.getId())).build();
+        Order order = user.findOrderById(orderId).orElseThrow(() -> new NotFoundException("order not found"));
+        return Response.created(routes.paymentUri(order.createPayment(info), user.getId())).build();
     }
 }
