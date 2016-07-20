@@ -183,7 +183,7 @@ public class UsersResourceTest extends ApiSupport {
     }
 
     @Test
-    public void should_return_detai_when_find_payment_for_order(){
+    public void should_return_detail_when_find_payment_for_order(){
         User user = userRepository.createUser(TestHelper.userMap("John"));
         Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
         Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
@@ -194,5 +194,14 @@ public class UsersResourceTest extends ApiSupport {
         final Map<String, Object> res = get.readEntity(Map.class);
         assertThat(res.get("order_uri"), is("/users/" + user.getId() + "/orders/" + order.getId()));
         assertThat(res.get("uri"), is("/users/" + user.getId() + "/orders/" + order.getId() + "/payment"));
+    }
+
+    @Test
+    public void should_return_404_when_payment_not_exists(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        Response get = get("users/" + user.getId() + "/orders/" + order.getId() + "/payment");
+        assertThat(get.getStatus(), is(HttpStatus.NOT_FOUND_404.getStatusCode()));
     }
 }
