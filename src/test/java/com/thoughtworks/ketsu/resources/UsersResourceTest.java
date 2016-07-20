@@ -1,9 +1,6 @@
 package com.thoughtworks.ketsu.resources;
 
-import com.thoughtworks.ketsu.infrastructure.core.Order;
-import com.thoughtworks.ketsu.infrastructure.core.Product;
-import com.thoughtworks.ketsu.infrastructure.core.User;
-import com.thoughtworks.ketsu.infrastructure.core.UserRepository;
+import com.thoughtworks.ketsu.infrastructure.core.*;
 import com.thoughtworks.ketsu.infrastructure.repositories.ProductRepository;
 import com.thoughtworks.ketsu.support.ApiSupport;
 import com.thoughtworks.ketsu.support.ApiTestRunner;
@@ -157,5 +154,16 @@ public class UsersResourceTest extends ApiSupport {
         assertThat(post.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
         assertThat(post.getLocation().toString(), containsString("/orders/"));
         assertThat(Pattern.matches(".*?/orders/[0-9-]*/payment", post.getLocation().toASCIIString()), is(true));
+    }
+
+    @Test
+    public void should_return_400_when_pay_order_with_payment_exists(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        Payment payment = order.createPayment(TestHelper.paymentMap("CASH", Float.valueOf(100)));
+
+        Response post = post("users/" + user.getId() + "/orders/" + order.getId() + "/payment",TestHelper.paymentMap("CASH", Float.valueOf(100)));
+        assertThat(post.getStatus(), is(HttpStatus.BAD_REQUEST_400.getStatusCode()));
     }
 }
