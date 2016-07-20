@@ -1,8 +1,12 @@
 package com.thoughtworks.ketsu.web;
 
 import com.thoughtworks.ketsu.infrastructure.core.User;
+import com.thoughtworks.ketsu.infrastructure.core.UserRepository;
+import com.thoughtworks.ketsu.infrastructure.records.OrderRecord;
+import com.thoughtworks.ketsu.web.jersey.Routes;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -25,7 +29,7 @@ public class UserResource {
     @POST
     @Path("orders")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createOrder(){
-        return Response.status(201).build();
+    public Response createOrder(@Context Routes routes){
+        return Response.created(routes.orderUri(new OrderRecord(Long.valueOf("1"), user.getId()))).build();
     }
 }

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -79,11 +80,12 @@ public class UsersResourceTest extends ApiSupport{
     }
 
     @Test
-    public void should_return_201_when_create_order_for_user(){
+    public void should_return_uri_when_create_order_for_user(){
         User user = userRepository.createUser(TestHelper.userMap("John"));
         Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
         Response post = post("users/" + user.getId() + "/orders", TestHelper.orderMap("John", product.getId()));
         assertThat(post.getStatus(), is(HttpStatus.CREATED_201.getStatusCode()));
-
+        assertThat(post.getLocation().toString(), containsString("/orders/"));
+        assertThat(Pattern.matches(".*?/orders/[0-9-]*", post.getLocation().toASCIIString()), is(true));
     }
 }

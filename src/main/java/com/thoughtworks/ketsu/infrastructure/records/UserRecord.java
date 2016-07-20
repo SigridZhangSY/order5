@@ -1,6 +1,7 @@
 package com.thoughtworks.ketsu.infrastructure.records;
 
 
+import com.thoughtworks.ketsu.infrastructure.core.Order;
 import com.thoughtworks.ketsu.infrastructure.core.User;
 import com.thoughtworks.ketsu.web.jersey.Routes;
 
@@ -25,6 +26,11 @@ public class UserRecord implements User, Record{
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public Order createOrderForUser(int userId, long orderId) {
+        return new OrderRecord(orderId, userId);
     }
 
     @Override
