@@ -61,4 +61,11 @@ public class UserResource {
             throw new InvalidParameterException(invalidParameter);
         return Response.created(routes.orderUri(user.createOrderForUser(info))).build();
     }
+
+    @GET
+    @Path("orders")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getOrders(){
+        return "OK";
+    }
 }
