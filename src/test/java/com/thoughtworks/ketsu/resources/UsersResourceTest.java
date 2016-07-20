@@ -124,4 +124,13 @@ public class UsersResourceTest extends ApiSupport {
         assertThat(list.size(), is(1));
         assertThat(list.get(0).get("uri"), is("/users/" + user.getId() + "/orders/" + order.getId()));
     }
+
+    @Test
+    public void should_return_200_when_find_order_by_id_for_user(){
+        User user = userRepository.createUser(TestHelper.userMap("John"));
+        Product product = productRepository.createProduct(TestHelper.productMap("apple", "red apple", Float.valueOf(String.valueOf(1.2))));
+        Order order = user.createOrderForUser(TestHelper.orderMap("kayla", product.getId()));
+        Response get = get("users/" + user.getId() + "/orders/" + order.getId());
+        assertThat(get.getStatus(), is(HttpStatus.OK_200.getStatusCode()));
+    }
 }

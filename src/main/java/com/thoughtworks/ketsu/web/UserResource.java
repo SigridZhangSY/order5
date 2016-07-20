@@ -69,4 +69,11 @@ public class UserResource {
     public List<Order> getOrders(){
         return  user.listOrdersForUser();
     }
+
+    @GET
+    @Path("orders/{orderId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getOrderByIdForUser(){
+        return "OK";
+    }
 }
